@@ -26,12 +26,7 @@ if (nav && !nav.querySelector('a[href="follow.html"]')) {
   const navCta = nav.querySelector('.nav-cta');
   nav.insertBefore(followLink, navCta);
 }
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) entry.target.classList.add('revealed');
-  });
-}, { threshold: 0.12 });
-document.querySelectorAll([
+const revealSelector = [
   '.episode-card',
   'blockquote',
   '.about-copy',
@@ -42,11 +37,26 @@ document.querySelectorAll([
   '.reviews-grid',
   '.newsletter > *',
   '.footer > *'
-].join(',')).forEach((el, index) => {
-  el.classList.add('reveal');
-  el.style.setProperty('--reveal-delay', `${Math.min(index % 3, 2) * 70}ms`);
-  observer.observe(el);
-});
+].join(',');
+const revealObserver = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('revealed');
+    revealObserver.unobserve(entry.target);
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' }) : null;
+
+function setupReveals(scope = document) {
+  scope.querySelectorAll(revealSelector).forEach((el, index) => {
+    if (el.classList.contains('reveal')) return;
+    el.classList.add('reveal');
+    el.style.setProperty('--reveal-delay', `${Math.min(index % 3, 2) * 70}ms`);
+    if (revealObserver) revealObserver.observe(el);
+    else el.classList.add('revealed');
+  });
+}
+
+setupReveals();
 
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/uncoveredlegacypodcast@gmail.com';
 const voicemailButton = document.createElement('button');
@@ -213,7 +223,10 @@ if (document.title.startsWith('Listener Reviews') || document.querySelector('.re
       const wall = document.querySelector('.review-wall');
       if (wall) wall.replaceChildren(...data.reviews.map(createReviewCard));
       const homeReviews = document.querySelector('.reviews-grid');
-      if (homeReviews) homeReviews.replaceChildren(...data.reviews.slice(0, 3).map(createReviewCard));
+      if (homeReviews) {
+        homeReviews.replaceChildren(...data.reviews.slice(0, 3).map(createReviewCard));
+        setupReveals(homeReviews);
+      }
     })
     .catch(() => {});
 }
@@ -357,6 +370,7 @@ function renderHomeEpisodes(episodes) {
     article.append(art, copy);
     return article;
   }));
+  setupReveals(grid);
   const totalLink = document.querySelector('#all-episodes-link');
   if (totalLink) totalLink.textContent = `View all ${episodes.length} episodes →`;
 }
