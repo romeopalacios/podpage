@@ -344,9 +344,29 @@ function renderHomeEpisodes(episodes) {
   const grid = document.querySelector('#latest-episodes');
   if (!grid) return;
   const latest = episodes.filter(episode => episode.type !== 'trailer').slice(0, 3);
+  const mobileLatest = document.querySelector('#mobile-latest-episode');
+  if (mobileLatest && latest[0]) {
+    const episode = latest[0];
+    const label = document.createElement('span');
+    label.className = 'mini-label';
+    label.textContent = 'LATEST EPISODE';
+    const title = document.createElement('a');
+    title.className = 'mobile-latest-title';
+    title.href = episodeUrl(episode);
+    title.textContent = episode.title;
+    const meta = document.createElement('small');
+    meta.textContent = `${formatDate(episode.published)}${episode.duration ? ` · ${episode.duration}` : ''}`;
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.preload = 'metadata';
+    audio.src = episode.audio;
+    audio.setAttribute('aria-label', `Play ${episode.title}`);
+    mobileLatest.replaceChildren(label, title, meta, audio);
+  }
   grid.replaceChildren(...latest.map((episode, index) => {
     const article = document.createElement('article');
     article.className = `episode-card${index === 0 ? ' featured' : ''}`;
+    article.dataset.href = episodeUrl(episode);
     const art = document.createElement('div');
     art.className = `episode-art art-${index + 1}`;
     art.style.backgroundImage = `url("${getArtwork(episode)}")`;
@@ -360,13 +380,31 @@ function renderHomeEpisodes(episodes) {
     meta.textContent = formatDate(episode.published);
     const heading = document.createElement('h3');
     heading.textContent = episode.title;
+    const detailsButton = document.createElement('button');
+    detailsButton.className = 'episode-details-toggle';
+    detailsButton.type = 'button';
+    detailsButton.setAttribute('aria-expanded', 'false');
+    detailsButton.textContent = 'More info';
     const summary = document.createElement('p');
+    summary.className = 'episode-summary';
+    summary.id = `home-episode-summary-${index}`;
+    detailsButton.setAttribute('aria-controls', summary.id);
     const firstParagraph = episode.description.split(/\n+/)[0];
     summary.textContent = firstParagraph.length > 220 ? `${firstParagraph.slice(0, 217).trimEnd()}…` : firstParagraph;
     const link = document.createElement('a');
     link.href = episodeUrl(episode);
     link.textContent = 'Listen to Episode →';
-    copy.append(meta, heading, summary, link);
+    detailsButton.addEventListener('click', () => {
+      const expanded = detailsButton.getAttribute('aria-expanded') === 'true';
+      detailsButton.setAttribute('aria-expanded', String(!expanded));
+      detailsButton.textContent = expanded ? 'More info' : 'Less info';
+      article.classList.toggle('details-open', !expanded);
+    });
+    article.addEventListener('click', event => {
+      if (!window.matchMedia('(max-width: 560px)').matches || event.target.closest('a, button, audio')) return;
+      window.location.href = article.dataset.href;
+    });
+    copy.append(meta, heading, detailsButton, summary, link);
     article.append(art, copy);
     return article;
   }));
