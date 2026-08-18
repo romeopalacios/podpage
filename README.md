@@ -1,26 +1,23 @@
-# Uncovered Legacy — Modern Premium Concept
+# Uncovered Legacy — Premium Production Build
 
-Open `index.html` with VS Code Live Server.
+This is a static multi-page redesign for Uncovered Legacy.
 
-## Important: Southern background
-The hero is already wired to use:
+## Included
+- Home, About, Episodes, Reviews, Contact, and individual episode views
+- Curtis Burke photo supplied for this project
+- About copy supplied for this project, preserved verbatim
+- Nine listener reviews from the current site
+- Six-season archive with official Apple Podcasts episode titles, dates, descriptions, artwork, and listening URLs loaded at runtime
+- Local individual episode pages (`episode.html?id=...`)
+- Responsive navigation, search, season filters, and mobile layout
 
-`images/southern-background.jpg`
+## Important deployment behavior
+The episode archive uses Apple's public JSONP lookup endpoint. An internet connection is required for episode cards and individual episode pages. This avoids stale duplicated episode metadata and keeps artwork and links aligned with Apple Podcasts.
 
-If that exact photo is not present, the site falls back to the included `southern-background.svg` so the layout still works.
+The newsletter and contact buttons point to the podcast's official working Podpage routes because their server-side form handling and spam protection cannot be reproduced in static HTML without credentials.
 
-To use Curtis's preferred Southern/Lowcountry photo:
-1. Save the approved image as `southern-background.jpg`
-2. Put it inside the `images` folder
-3. Refresh Live Server
+## Preview
+Open the folder in VS Code and use Live Server on `index.html`.
 
-No CSS changes are required.
-
-## Current assets
-- Curtis Burke supplied profile image
-- Uncovered Legacy podcast artwork
-- Modern responsive homepage
-- Season links and current homepage content structure
-- Existing Uncovered Legacy links preserved
-
-This is a frontend concept. Newsletter/contact submissions still point to the existing live Podpage functions until a separate backend/CMS decision is made.
+## Deployment
+The folder can be hosted on GitHub Pages, Netlify, Cloudflare Pages, or another static host. Keep the directory structure intact.
