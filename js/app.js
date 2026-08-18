@@ -347,6 +347,14 @@ function renderHomeEpisodes(episodes) {
   const mobileLatest = document.querySelector('#mobile-latest-episode');
   if (mobileLatest && latest[0]) {
     const episode = latest[0];
+    const header = document.createElement('div');
+    header.className = 'mobile-latest-header';
+    const artwork = document.createElement('img');
+    artwork.className = 'mobile-latest-artwork';
+    artwork.src = getArtwork(episode);
+    artwork.alt = `${episode.title} artwork`;
+    const copy = document.createElement('div');
+    copy.className = 'mobile-latest-copy';
     const label = document.createElement('span');
     label.className = 'mini-label';
     label.textContent = 'LATEST EPISODE';
@@ -361,7 +369,15 @@ function renderHomeEpisodes(episodes) {
     audio.preload = 'metadata';
     audio.src = episode.audio;
     audio.setAttribute('aria-label', `Play ${episode.title}`);
-    mobileLatest.replaceChildren(label, title, meta, audio);
+    const appleLink = document.createElement('a');
+    appleLink.className = 'btn btn-ghost mobile-apple-link';
+    appleLink.href = 'https://podcasts.apple.com/us/podcast/uncovered-legacy/id1564012144';
+    appleLink.target = '_blank';
+    appleLink.rel = 'noopener';
+    appleLink.textContent = 'Listen on Apple Podcasts';
+    copy.append(label, title, meta);
+    header.append(artwork, copy);
+    mobileLatest.replaceChildren(header, audio, appleLink);
   }
   grid.replaceChildren(...latest.map((episode, index) => {
     const article = document.createElement('article');
