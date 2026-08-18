@@ -257,6 +257,8 @@ blockquote footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;c
   .episode-row{grid-template-columns:64px minmax(0,1fr);gap:10px 14px;padding:22px 0;align-items:start}
   .episode-number{grid-column:1;font-size:22px}.episode-thumb-link{grid-column:1;grid-row:2;align-self:start;background:#fff url('../images/podcast-cover.webp') center/cover no-repeat}.episode-thumb-link img{display:block;width:100%;height:100%;object-fit:contain;background:#eee8dc}.episode-info{grid-column:2;grid-row:1/3;min-width:0}.episode-info h2{font-size:19px;overflow-wrap:anywhere}.episode-row .text-link{grid-column:2;grid-row:3;justify-self:start;margin-top:4px}
   .review-wall{grid-template-columns:1fr}blockquote{padding:22px}blockquote p{font-size:20px}
+  .about-photo-wrap{min-height:0;aspect-ratio:1/1}
+  .about-photo-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .host-layout{gap:34px}.host-layout img{max-height:520px}.long-copy h2{font-size:42px}.long-copy p{font-size:16px;line-height:1.75}.quote-panel{font-size:25px;padding-left:18px}
   .episode-page-hero{padding:50px 18px;gap:30px}.episode-page-hero h1{font-size:38px;overflow-wrap:anywhere}.episode-page-hero img{border-radius:16px}.episode-notes{padding:55px 18px 75px}.episode-notes h2{font-size:40px}
   .follow-card{grid-template-columns:52px minmax(0,1fr) auto;gap:13px;padding:16px}.platform-mark{width:52px;height:52px;border-radius:12px}.follow-card strong{font-size:22px}.follow-card small{font-size:12px}
