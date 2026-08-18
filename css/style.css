@@ -207,6 +207,15 @@ blockquote footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;c
   .follow-main{grid-template-columns:1fr}.follow-heading{position:static}
   .review-invite{grid-template-columns:1fr;padding-top:70px;padding-bottom:70px}
   .episode-page-hero img{max-width:480px}
+  body:not(.inner-body){background:#090909}
+  body:not(.inner-body) .hero{min-height:max(100svh,680px);padding:124px 22px 42px;align-items:flex-start;flex-direction:column;background:#090909}
+  body:not(.inner-body) .hero-bg{display:none}
+  body:not(.inner-body) .hero-overlay{background:radial-gradient(circle at 82% 24%,rgba(198,164,77,.12),transparent 38%),linear-gradient(#090909,#111)}
+  body:not(.inner-body) .hero-content{padding-top:0;width:100%;max-width:none}
+  body:not(.inner-body) .hero-actions,body:not(.inner-body) .hero-card{display:none}
+  body:not(.inner-body) .mobile-explore-episodes{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;width:100%;min-height:58px;margin-top:34px;padding:0 20px;border:1px solid rgba(255,255,255,.24);border-radius:999px;background:#fff;color:#090909;font-size:14px;font-weight:800;letter-spacing:.04em;box-shadow:0 14px 35px rgba(0,0,0,.35)}
+  body:not(.inner-body) .mobile-explore-episodes span{font-size:20px;line-height:1}
+  body:not(.inner-body) #episodes{display:none}
 }
 @media(max-width:560px){
   body{animation:mobile-page-fade-in .65s ease-out both}
