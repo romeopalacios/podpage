@@ -198,7 +198,11 @@ blockquote footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;c
   .episode-grid{grid-template-columns:1fr}
   .episode-card,.episode-card.featured{grid-column:auto;grid-template-columns:1fr}
   .episode-art{min-height:0}
-  .about-section{grid-template-columns:1fr}.about-photo-wrap{min-height:520px}
+  .about-section{grid-template-columns:1fr}
+  .about-photo-wrap{min-height:520px}
+  .about-copy{padding:58px 20px 64px}
+  .about-copy p{display:none}
+  .about-copy h2{font-size:42px}
   .reviews-grid{grid-template-columns:1fr}
   .newsletter{align-items:flex-start;flex-direction:column}
   .footer{grid-template-columns:1fr}.footer-links{flex-wrap:wrap}
@@ -246,7 +250,6 @@ blockquote footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;c
   .episode-art{min-height:0}.episode-copy h3{font-size:25px}.episode-copy p{font-size:15px;line-height:1.65}
   .episode-details-toggle{display:flex;align-items:center;gap:7px;margin:2px 0 15px;padding:7px 0;border:0;background:transparent;color:#755a1f;font:750 12px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}.episode-details-toggle:after{content:'+';font-size:17px;line-height:1}.episode-details-toggle[aria-expanded="true"]:after{content:'−'}
   .episode-summary{display:none}.episode-card.details-open .episode-summary{display:block;animation:episode-details-in .24s ease-out}.episode-copy>a{display:inline-block;margin-top:2px}
-  .about-photo-wrap{display:none}.about-copy{padding:58px 20px 64px}.about-copy .eyebrow,.about-copy p{display:none}.about-copy h2{font-size:42px}
   .newsletter{padding:60px 20px}
   .newsletter h2{font-size:42px;line-height:1.04}.newsletter .btn{width:100%}
   .page-hero{padding:58px 18px 50px}.page-hero h1{font-size:52px}.page-hero p{font-size:16px;line-height:1.6}.inner-main{padding:55px 18px 75px}
