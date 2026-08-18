@@ -1,0 +1,39 @@
+name: Sync podcast episodes
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: podcast-feed-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh episodes from the public podcast feed
+        run: ruby scripts/sync_podcast.rb
+      - name: Refresh approved Podpage reviews
+        run: ruby scripts/sync_podpage_reviews.rb
+      - name: Import artwork for new episodes
+        run: |
+          if ! git diff --quiet -- data/episodes.json; then
+            ruby scripts/import_podpage_artwork.rb
+          fi
+      - name: Publish feed changes
+        run: |
+          if git diff --quiet -- data/episodes.json data/reviews.json; then
+            echo "The podcast feed and reviews have not changed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/episodes.json data/reviews.json
+          git commit -m "Sync podcast content"
+          git push
