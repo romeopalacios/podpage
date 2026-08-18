@@ -31,8 +31,20 @@ const observer = new IntersectionObserver((entries) => {
     if (entry.isIntersecting) entry.target.classList.add('revealed');
   });
 }, { threshold: 0.12 });
-document.querySelectorAll('.episode-card, blockquote, .about-copy').forEach(el => {
+document.querySelectorAll([
+  '.episode-card',
+  'blockquote',
+  '.about-copy',
+  '.statement > p',
+  '.section-heading',
+  '.season-strip',
+  '.about-photo-wrap',
+  '.reviews-grid',
+  '.newsletter > *',
+  '.footer > *'
+].join(',')).forEach((el, index) => {
   el.classList.add('reveal');
+  el.style.setProperty('--reveal-delay', `${Math.min(index % 3, 2) * 70}ms`);
   observer.observe(el);
 });
 
