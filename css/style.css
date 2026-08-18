@@ -207,6 +207,7 @@ blockquote footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;c
   .episode-page-hero img{max-width:480px}
 }
 @media(max-width:560px){
+  body{animation:mobile-page-fade-in .65s ease-out both}
   .site-header{padding:18px 18px}
   .brand{gap:9px}.site-header .brand-mark{width:44px;height:44px}
   .menu-toggle{min-height:44px;padding:9px 16px;font-size:14px}
@@ -233,7 +234,7 @@ blockquote footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;c
   .page-hero{padding:58px 18px 50px}.page-hero h1{font-size:52px}.page-hero p{font-size:16px;line-height:1.6}.inner-main{padding:55px 18px 75px}
   .inner-heading{align-items:flex-start;flex-direction:column;gap:12px}.inner-heading h2{font-size:42px}
   .episode-row{grid-template-columns:64px minmax(0,1fr);gap:10px 14px;padding:22px 0;align-items:start}
-  .episode-number{grid-column:1;font-size:22px}.episode-thumb-link{grid-column:1;grid-row:2;align-self:start}.episode-info{grid-column:2;grid-row:1/3;min-width:0}.episode-info h2{font-size:19px;overflow-wrap:anywhere}.episode-row .text-link{grid-column:2;grid-row:3;justify-self:start;margin-top:4px}
+  .episode-number{grid-column:1;font-size:22px}.episode-thumb-link{grid-column:1;grid-row:2;align-self:start;background:#fff url('../images/podcast-cover.webp') center/cover no-repeat}.episode-thumb-link img{display:none}.episode-info{grid-column:2;grid-row:1/3;min-width:0}.episode-info h2{font-size:19px;overflow-wrap:anywhere}.episode-row .text-link{grid-column:2;grid-row:3;justify-self:start;margin-top:4px}
   .review-wall{grid-template-columns:1fr}blockquote{padding:22px}blockquote p{font-size:20px}
   .host-layout{gap:34px}.host-layout img{max-height:520px}.long-copy h2{font-size:42px}.long-copy p{font-size:16px;line-height:1.75}.quote-panel{font-size:25px;padding-left:18px}
   .episode-page-hero{padding:50px 18px;gap:30px}.episode-page-hero h1{font-size:38px;overflow-wrap:anywhere}.episode-page-hero img{border-radius:16px}.episode-notes{padding:55px 18px 75px}.episode-notes h2{font-size:40px}
@@ -246,5 +247,6 @@ blockquote footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;c
   .form-row{grid-template-columns:1fr}.premium-form input,.premium-form textarea{font-size:16px}.review-invite h1 br{display:none}
 }
 
+@keyframes mobile-page-fade-in{from{opacity:0}to{opacity:1}}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease var(--reveal-delay,0ms),transform .7s ease var(--reveal-delay,0ms)}.reveal.revealed{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+@media(prefers-reduced-motion:reduce){body{animation:none}.reveal{opacity:1;transform:none;transition:none}}
