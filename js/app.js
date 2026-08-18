@@ -181,10 +181,11 @@ async function submitEmailForm(form, attachment) {
   data.append('_captcha', 'false');
   if (attachment) data.append('attachment', new File([attachment], `uncovered-legacy-voicemail-${Date.now()}.webm`, { type: attachment.type }));
   try {
-    const response = await fetch(FORM_ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: data });
+    const endpoint = form.dataset.endpoint || FORM_ENDPOINT;
+    const response = await fetch(endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: data });
     if (!response.ok) throw new Error('Submission failed');
     form.reset();
-    status.textContent = attachment ? 'Your voicemail was sent. Thank you!' : 'Your review was sent. Thank you!';
+    status.textContent = attachment ? 'Your voicemail was sent. Thank you!' : form.id === 'contact-form' ? 'Your message is on its way to Curtis. Thank you!' : 'Your review was sent. Thank you!';
   } catch (error) {
     status.textContent = 'We could not send that right now. Please try again.';
   } finally {
@@ -201,6 +202,12 @@ const reviewForm = document.querySelector('#review-form');
 if (reviewForm) reviewForm.addEventListener('submit', event => {
   event.preventDefault();
   submitEmailForm(reviewForm);
+});
+
+const contactForm = document.querySelector('#contact-form');
+if (contactForm) contactForm.addEventListener('submit', event => {
+  event.preventDefault();
+  submitEmailForm(contactForm);
 });
 
 function createReviewCard(review) {
