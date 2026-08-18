@@ -215,8 +215,8 @@ blockquote footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;c
   .hero-bg{background-position:62% center}
   .hero-content{padding-top:0;width:100%;max-width:none}
   .hero h1{max-width:none;font-size:clamp(38px,11.8vw,48px);line-height:.98;letter-spacing:-.035em;margin-bottom:18px}
-  .hero p{max-width:none;font-size:15px;line-height:1.5;margin:clamp(42px,8svh,72px) 4px 0 0}
-  .hero-actions{display:grid;grid-template-columns:1fr;margin-top:22px}.hero-actions .btn{width:100%}
+  .hero p{max-width:none;font-size:15px;line-height:1.5;margin:clamp(78px,12svh,112px) 4px 0 0}
+  .hero-actions{display:grid;grid-template-columns:1fr;margin-top:28px}.hero-actions .btn{width:100%}
   .hero-card{grid-template-columns:38px minmax(0,1fr);gap:9px;width:100%;margin-top:auto;padding:8px 9px;border-radius:12px}.hero-card img{width:38px;height:38px;border-radius:6px}.hero-card strong{font-size:14px;line-height:1.1}.hero-card small{font-size:11px;line-height:1.25;margin-top:2px}.hero-card .mini-label{font-size:8px;margin-bottom:2px}
   .statement{padding:36px 14px}
   .statement p{font-size:clamp(17px,4.8vw,22px);line-height:1.5}
