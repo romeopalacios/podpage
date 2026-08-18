@@ -223,7 +223,7 @@ blockquote footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;c
   .hero p{max-width:none;font-size:16px;line-height:1.65;margin:36px 0 0}
   .hero-actions{display:none}
   .hero-card{display:none}
-  .mobile-latest-episode{position:relative;z-index:3;display:grid;width:100%;margin-top:28px;padding:17px;border:1px solid rgba(255,255,255,.25);border-radius:16px;background:rgba(15,15,12,.68);backdrop-filter:blur(16px);box-shadow:0 16px 38px rgba(0,0,0,.22)}
+  .mobile-latest-episode{position:relative;z-index:3;display:grid;width:100%;margin-top:84px;padding:17px;border:1px solid rgba(255,255,255,.25);border-radius:16px;background:rgba(15,15,12,.68);backdrop-filter:blur(16px);box-shadow:0 16px 38px rgba(0,0,0,.22)}
   .mobile-latest-header{display:grid;grid-template-columns:64px minmax(0,1fr);gap:13px;align-items:center}
   .mobile-latest-artwork{width:64px;height:64px;object-fit:cover;border-radius:10px;box-shadow:0 5px 16px rgba(0,0,0,.25)}
   .mobile-latest-copy{display:grid;min-width:0}
@@ -246,7 +246,7 @@ blockquote footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;c
   .episode-art{min-height:0}.episode-copy h3{font-size:25px}.episode-copy p{font-size:15px;line-height:1.65}
   .episode-details-toggle{display:flex;align-items:center;gap:7px;margin:2px 0 15px;padding:7px 0;border:0;background:transparent;color:#755a1f;font:750 12px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}.episode-details-toggle:after{content:'+';font-size:17px;line-height:1}.episode-details-toggle[aria-expanded="true"]:after{content:'−'}
   .episode-summary{display:none}.episode-card.details-open .episode-summary{display:block;animation:episode-details-in .24s ease-out}.episode-copy>a{display:inline-block;margin-top:2px}
-  .about-photo-wrap{min-height:390px}.about-copy{padding:58px 20px 64px}.about-copy h2{font-size:42px}.about-copy p{font-size:16px}
+  .about-photo-wrap{display:none}.about-copy{padding:58px 20px 64px}.about-copy .eyebrow,.about-copy p{display:none}.about-copy h2{font-size:42px}
   .newsletter{padding:60px 20px}
   .newsletter h2{font-size:42px;line-height:1.04}.newsletter .btn{width:100%}
   .page-hero{padding:58px 18px 50px}.page-hero h1{font-size:52px}.page-hero p{font-size:16px;line-height:1.6}.inner-main{padding:55px 18px 75px}
