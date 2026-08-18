@@ -33,7 +33,6 @@ const revealSelector = [
   '.statement > p',
   '.section-heading',
   '.season-strip',
-  '.about-photo-wrap',
   '.reviews-grid',
   '.newsletter > *',
   '.footer > *'
