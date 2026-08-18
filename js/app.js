@@ -26,6 +26,15 @@ if (nav && !nav.querySelector('a[href="follow.html"]')) {
   const navCta = nav.querySelector('.nav-cta');
   nav.insertBefore(followLink, navCta);
 }
+if (nav && !nav.querySelector('a[href="https://www.youtube.com/@CurtisUncoveredLegacyPodcast"]')) {
+  const documentaryLink = document.createElement('a');
+  documentaryLink.href = 'https://www.youtube.com/@CurtisUncoveredLegacyPodcast';
+  documentaryLink.target = '_blank';
+  documentaryLink.rel = 'noopener';
+  documentaryLink.textContent = 'Uncovered Documentary';
+  const navCta = nav.querySelector('.nav-cta');
+  nav.insertBefore(documentaryLink, navCta);
+}
 const revealSelector = [
   '.episode-card',
   'blockquote',
