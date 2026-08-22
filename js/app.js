@@ -67,111 +67,7 @@ function setupReveals(scope = document) {
 setupReveals();
 
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/uncoveredlegacypodcast@gmail.com';
-const voicemailButton = document.createElement('button');
-voicemailButton.className = 'voicemail-button';
-voicemailButton.type = 'button';
-voicemailButton.setAttribute('aria-label', 'Leave Uncovered Legacy a voicemail');
-voicemailButton.innerHTML = `
-  <span class="voicemail-label">Leave a voicemail</span>
-  <span class="voicemail-icon" aria-hidden="true">
-    <svg viewBox="0 0 24 24" role="img"><path d="M12 15.5a4.5 4.5 0 0 0 4.5-4.5V6.5a4.5 4.5 0 0 0-9 0V11a4.5 4.5 0 0 0 4.5 4.5Zm-2.5-9a2.5 2.5 0 0 1 5 0V11a2.5 2.5 0 0 1-5 0V6.5ZM5 10a1 1 0 0 1 1 1 6 6 0 0 0 12 0 1 1 0 1 1 2 0 8 8 0 0 1-7 7.94V21h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2.06A8 8 0 0 1 4 11a1 1 0 0 1 1-1Z"/></svg>
-  </span>`;
-document.body.append(voicemailButton);
-
-const voicemailModal = document.createElement('div');
-voicemailModal.className = 'voicemail-overlay';
-voicemailModal.hidden = true;
-voicemailModal.innerHTML = `
-  <section class="voicemail-modal" role="dialog" aria-modal="true" aria-labelledby="voicemail-title">
-    <button class="voicemail-close" type="button" aria-label="Close voicemail recorder">×</button>
-    <div class="eyebrow dark">LEAVE YOUR VOICE</div>
-    <h2 id="voicemail-title">Send Curtis a voicemail.</h2>
-    <p class="voicemail-help">Record up to two minutes. You can listen back before sending.</p>
-    <div class="recorder-controls">
-      <button class="btn btn-dark recorder-start" type="button">● Start recording</button>
-      <button class="btn btn-dark recorder-stop" type="button" hidden>Stop recording</button>
-      <span class="recorder-time" aria-live="polite">0:00 / 2:00</span>
-    </div>
-    <audio class="voicemail-preview" controls hidden></audio>
-    <form class="premium-form voicemail-form" hidden>
-      <input type="hidden" name="_subject" value="New Uncovered Legacy voicemail">
-      <input class="form-honey" type="text" name="_honey" tabindex="-1" autocomplete="off">
-      <div class="form-row"><label>Your name<input type="text" name="name" autocomplete="name" required></label><label>Your email<input type="email" name="email" autocomplete="email" required></label></div>
-      <label>Optional note<textarea name="message" rows="3" placeholder="Add a little context…"></textarea></label>
-      <p class="recording-consent">By sending, you consent to your recording being stored, edited, and publicly used by the podcast.</p>
-      <button class="btn btn-primary" type="submit">Send Voicemail →</button>
-      <button class="text-button recorder-redo" type="button">Record again</button>
-      <p class="form-status" role="status" aria-live="polite"></p>
-    </form>
-  </section>`;
-document.body.append(voicemailModal);
-
-const closeVoicemail = () => {
-  stopRecording();
-  voicemailModal.hidden = true;
-  document.body.classList.remove('modal-open');
-};
-voicemailButton.addEventListener('click', () => {
-  voicemailModal.hidden = false;
-  document.body.classList.add('modal-open');
-  voicemailModal.querySelector('.voicemail-close').focus();
-});
-voicemailModal.querySelector('.voicemail-close').addEventListener('click', closeVoicemail);
-voicemailModal.addEventListener('click', event => { if (event.target === voicemailModal) closeVoicemail(); });
-document.addEventListener('keydown', event => { if (event.key === 'Escape' && !voicemailModal.hidden) closeVoicemail(); });
-
-let mediaRecorder;
-let mediaStream;
-let recordingBlob;
-let recordingTimer;
-let recordingSeconds = 0;
-const startButton = voicemailModal.querySelector('.recorder-start');
-const stopButton = voicemailModal.querySelector('.recorder-stop');
-const timeDisplay = voicemailModal.querySelector('.recorder-time');
-const preview = voicemailModal.querySelector('.voicemail-preview');
-const voicemailForm = voicemailModal.querySelector('.voicemail-form');
-
-function stopRecording() {
-  if (mediaRecorder?.state === 'recording') mediaRecorder.stop();
-}
-
-startButton.addEventListener('click', async () => {
-  try {
-    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const chunks = [];
-    mediaRecorder = new MediaRecorder(mediaStream);
-    mediaRecorder.addEventListener('dataavailable', event => { if (event.data.size) chunks.push(event.data); });
-    mediaRecorder.addEventListener('stop', () => {
-      clearInterval(recordingTimer);
-      mediaStream.getTracks().forEach(track => track.stop());
-      recordingBlob = new Blob(chunks, { type: mediaRecorder.mimeType || 'audio/webm' });
-      preview.src = URL.createObjectURL(recordingBlob);
-      preview.hidden = false;
-      voicemailForm.hidden = false;
-      startButton.hidden = false;
-      startButton.textContent = '● Record again';
-      stopButton.hidden = true;
-    });
-    mediaRecorder.start();
-    recordingSeconds = 0;
-    timeDisplay.textContent = '0:00 / 2:00';
-    startButton.hidden = true;
-    stopButton.hidden = false;
-    preview.hidden = true;
-    voicemailForm.hidden = true;
-    recordingTimer = setInterval(() => {
-      recordingSeconds += 1;
-      timeDisplay.textContent = `${Math.floor(recordingSeconds / 60)}:${String(recordingSeconds % 60).padStart(2, '0')} / 2:00`;
-      if (recordingSeconds >= 120) stopRecording();
-    }, 1000);
-  } catch (error) {
-    timeDisplay.textContent = 'Microphone access is needed to record a voicemail.';
-  }
-});
-stopButton.addEventListener('click', stopRecording);
-voicemailModal.querySelector('.recorder-redo').addEventListener('click', () => startButton.click());
-
-async function submitEmailForm(form, attachment) {
+async function submitEmailForm(form) {
   const status = form.querySelector('.form-status');
   const submit = form.querySelector('[type="submit"]');
   status.textContent = 'Sending…';
@@ -179,24 +75,18 @@ async function submitEmailForm(form, attachment) {
   const data = new FormData(form);
   data.append('_template', 'table');
   data.append('_captcha', 'false');
-  if (attachment) data.append('attachment', new File([attachment], `uncovered-legacy-voicemail-${Date.now()}.webm`, { type: attachment.type }));
   try {
     const endpoint = form.dataset.endpoint || FORM_ENDPOINT;
     const response = await fetch(endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: data });
     if (!response.ok) throw new Error('Submission failed');
     form.reset();
-    status.textContent = attachment ? 'Your voicemail was sent. Thank you!' : form.id === 'contact-form' ? 'Your message is on its way to Curtis. Thank you!' : 'Your review was sent. Thank you!';
+    status.textContent = form.id === 'contact-form' ? 'Your message is on its way to Curtis. Thank you!' : 'Your review was sent. Thank you!';
   } catch (error) {
     status.textContent = 'We could not send that right now. Please try again.';
   } finally {
     submit.disabled = false;
   }
 }
-
-voicemailForm.addEventListener('submit', event => {
-  event.preventDefault();
-  if (recordingBlob) submitEmailForm(voicemailForm, recordingBlob);
-});
 
 const reviewForm = document.querySelector('#review-form');
 if (reviewForm) reviewForm.addEventListener('submit', event => {
@@ -249,11 +139,6 @@ if (document.title.startsWith('Listener Reviews') || document.querySelector('.re
 if (document.title.startsWith('Contact')) {
   const managePodcastCard = [...document.querySelectorAll('.contact-card')].find(card => card.querySelector('h2')?.textContent.trim() === 'Manage the podcast');
   managePodcastCard?.remove();
-  const recordLink = [...document.querySelectorAll('a')].find(link => link.textContent.trim().startsWith('Record a Message'));
-  if (recordLink) recordLink.addEventListener('click', event => {
-    event.preventDefault();
-    voicemailButton.click();
-  });
 }
 
 if (document.title.startsWith('Listener Reviews')) {
