@@ -21,12 +21,24 @@ img{max-width:100%;display:block}
 .brand{display:flex;gap:12px;align-items:center;letter-spacing:.08em}
 .brand-mark{width:42px;height:42px;border:1px solid rgba(255,255,255,.55);display:grid;place-items:center;font-family:Georgia,serif;font-size:14px}
 .site-header .brand-mark{width:48px;height:48px;color:transparent;border:0;border-radius:9px;background:#fff url('../images/ulp sunset black.png') center/cover no-repeat;box-shadow:0 5px 16px rgba(0,0,0,.2);overflow:hidden}
+.site-header .brand-mark{cursor:zoom-in;transition:transform .2s ease,box-shadow .2s ease}
+.site-header .brand-mark:hover{transform:scale(1.05);box-shadow:0 7px 20px rgba(0,0,0,.3)}
+.site-header .brand-mark:focus-visible{outline:3px solid var(--gold2);outline-offset:3px}
 .brand strong,.brand em{display:block;font-style:normal;font-size:12px;line-height:1.05}
 .brand em{color:var(--gold2);font-family:Georgia,serif;font-size:15px}
 .nav{display:flex;gap:30px;align-items:center;font-size:14px}
 .nav a{opacity:.9}.nav a:hover{opacity:1}
 .nav-cta{border:1px solid rgba(255,255,255,.5);padding:12px 17px;border-radius:999px}
 .menu-toggle{display:none;background:none;border:1px solid rgba(255,255,255,.4);color:#fff;padding:9px 13px;border-radius:999px}
+.artwork-viewer{position:fixed;z-index:1000;inset:0;display:flex;align-items:center;justify-content:center;padding:72px 22px 28px;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease}
+.artwork-viewer.open{opacity:1;visibility:visible}
+.artwork-viewer-frame{width:min(82vh,720px,92vw);transform:scale(.88);opacity:0;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+.artwork-viewer.open .artwork-viewer-frame{transform:scale(1);opacity:1}
+.artwork-viewer-frame img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px;box-shadow:0 26px 80px rgba(0,0,0,.55)}
+.artwork-viewer-frame span{display:block;margin-top:14px;color:#fff;font:400 20px Georgia,serif;text-align:center}
+.artwork-viewer-close{position:absolute;top:max(18px,env(safe-area-inset-top));right:20px;width:46px;height:46px;border:1px solid rgba(255,255,255,.28);border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font:300 32px/1 sans-serif;cursor:pointer}
+.artwork-viewer-close:focus-visible{outline:3px solid var(--gold2);outline-offset:3px}
+body.artwork-viewer-open{overflow:hidden}
 .hero{
   min-height:92vh;position:relative;display:flex;align-items:flex-end;overflow:hidden;color:white;padding:150px clamp(22px,5vw,76px) 78px
 }

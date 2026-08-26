@@ -1,6 +1,60 @@
 
 const menuButton = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.nav');
+
+// Keep the wordmark as the home/reset link, while letting the artwork open
+// independently in a focused, video-player-style overlay.
+const headerBrand = document.querySelector('.site-header .brand');
+const headerBrandMark = headerBrand?.querySelector('.brand-mark');
+if (headerBrand && headerBrandMark) {
+  headerBrandMark.setAttribute('role', 'button');
+  headerBrandMark.setAttribute('tabindex', '0');
+  headerBrandMark.setAttribute('aria-label', 'Expand Uncovered Legacy artwork');
+  headerBrandMark.setAttribute('title', 'Expand artwork');
+
+  const artworkViewer = document.createElement('div');
+  artworkViewer.className = 'artwork-viewer';
+  artworkViewer.setAttribute('role', 'dialog');
+  artworkViewer.setAttribute('aria-modal', 'true');
+  artworkViewer.setAttribute('aria-label', 'Uncovered Legacy artwork');
+  artworkViewer.setAttribute('aria-hidden', 'true');
+  artworkViewer.innerHTML = `
+    <button class="artwork-viewer-close" type="button" aria-label="Close expanded artwork">&times;</button>
+    <div class="artwork-viewer-frame">
+      <img src="images/ulp sunset black.png" alt="Uncovered Legacy podcast artwork">
+      <span>Uncovered Legacy</span>
+    </div>`;
+  document.body.append(artworkViewer);
+
+  const closeButton = artworkViewer.querySelector('.artwork-viewer-close');
+  const openArtwork = event => {
+    event.preventDefault();
+    event.stopPropagation();
+    artworkViewer.classList.add('open');
+    artworkViewer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('artwork-viewer-open');
+    closeButton.focus();
+  };
+  const closeArtwork = () => {
+    artworkViewer.classList.remove('open');
+    artworkViewer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('artwork-viewer-open');
+    headerBrandMark.focus();
+  };
+
+  headerBrandMark.addEventListener('click', openArtwork);
+  headerBrandMark.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') openArtwork(event);
+  });
+  closeButton.addEventListener('click', closeArtwork);
+  artworkViewer.addEventListener('click', event => {
+    if (event.target === artworkViewer) closeArtwork();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && artworkViewer.classList.contains('open')) closeArtwork();
+  });
+}
+
 if (menuButton && nav) {
   const closeMenu = () => {
     nav.classList.remove('open');
