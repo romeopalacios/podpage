@@ -157,7 +157,7 @@ const episodeArtwork = {
   'e7c57a48-443b-496b-8f5e-a49e53342c74': 'images/episode-carl.png'
 };
 
-const getArtwork = episode => episode.artwork || episodeArtwork[episode.id] || 'images/podcast-cover.webp';
+const getArtwork = episode => episode.artwork || episodeArtwork[episode.id] || 'images/ulp sunset black.png';
 const episodeUrl = episode => `episode.html?id=${encodeURIComponent(episode.id)}`;
 const formatDate = value => new Intl.DateTimeFormat('en-US', {
   month: 'long', day: 'numeric', year: 'numeric'
