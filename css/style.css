@@ -307,7 +307,7 @@ blockquote footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;c
   .section-heading{align-items:flex-start;flex-direction:column}
   .section-heading h2,.section-heading.light h2{font-size:42px}
   .season-strip{margin-right:-18px;padding-right:18px;scrollbar-width:none}.season-strip::-webkit-scrollbar{display:none}.season-strip a{min-height:44px;display:flex;align-items:center}
-  .episode-grid{gap:34px}.episode-grid .episode-card:first-child{display:none}.episode-card,.episode-card.featured{gap:18px;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}.episode-card.featured{padding:16px;border-radius:18px}.episode-card:active{transform:scale(.985)}
+  .episode-grid{gap:34px}.episode-card,.episode-card.featured{gap:18px;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}.episode-card.featured{padding:16px;border-radius:18px}.episode-card:active{transform:scale(.985)}
   .episode-art{min-height:0}.episode-copy h3{font-size:25px}.episode-copy p{font-size:15px;line-height:1.65}
   .episode-details-toggle{display:flex;align-items:center;gap:7px;margin:2px 0 15px;padding:7px 0;border:0;background:transparent;color:#755a1f;font:750 12px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}.episode-details-toggle:after{content:'+';font-size:17px;line-height:1}.episode-details-toggle[aria-expanded="true"]:after{content:'−'}
   .episode-summary{display:none}.episode-card.details-open .episode-summary{display:block;animation:episode-details-in .24s ease-out}.episode-copy>a{display:inline-block;margin-top:2px}

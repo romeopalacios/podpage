@@ -347,6 +347,7 @@ function renderHomeEpisodes(episodes) {
   const grid = document.querySelector('#latest-episodes');
   if (!grid) return;
   const latest = episodes.filter(episode => episode.type !== 'trailer').slice(0, 3);
+  const recent = latest.slice(1);
   const mobileLatest = document.querySelector('#mobile-latest-episode');
   if (mobileLatest && latest[0]) {
     const episode = latest[0];
@@ -382,12 +383,12 @@ function renderHomeEpisodes(episodes) {
     header.append(artwork, copy);
     mobileLatest.replaceChildren(header, audio, appleLink);
   }
-  grid.replaceChildren(...latest.map((episode, index) => {
+  grid.replaceChildren(...recent.map((episode, index) => {
     const article = document.createElement('article');
-    article.className = `episode-card${index === 0 ? ' featured' : ''}`;
+    article.className = 'episode-card';
     article.dataset.href = episodeUrl(episode);
     const art = document.createElement('div');
-    art.className = `episode-art art-${index + 1}`;
+    art.className = `episode-art art-${index + 2}`;
     art.style.backgroundImage = `url("${getArtwork(episode)}")`;
     const label = document.createElement('span');
     label.textContent = episode.season ? `S${String(episode.season).padStart(2, '0')} E${String(episode.episode || '').padStart(2, '0')}` : 'NEW';
