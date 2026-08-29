@@ -3,6 +3,8 @@ const { url, publishableKey } = window.UL_SUPABASE;
 const supabaseAdmin = window.supabase.createClient(url, publishableKey);
 const login = document.querySelector('#admin-login');
 const panel = document.querySelector('#admin-panel');
+const loginButton = document.querySelector('#admin-login-button');
+const loginStatus = document.querySelector('#admin-login-status');
 const status = document.querySelector('#admin-status');
 const list = document.querySelector('#pending-reviews');
 
@@ -65,15 +67,26 @@ async function showSession() {
   if (isAdmin) loadPendingReviews();
 }
 
-document.querySelector('#admin-login-button').addEventListener('click', async event => {
-  event.currentTarget.disabled = true;
-  const { error } = await supabaseAdmin.auth.signInWithOtp({
-    email: adminEmail,
-    options: { emailRedirectTo: new URL('admin.html', window.location.href).href }
-  });
-  event.currentTarget.disabled = false;
-  event.currentTarget.textContent = error ? error.message : 'Check Your Email';
+loginButton.addEventListener('click', async () => {
+  loginButton.disabled = true;
+  loginStatus.textContent = 'Sending secure sign-in link…';
+  try {
+    const request = supabaseAdmin.auth.signInWithOtp({
+      email: adminEmail,
+      options: { emailRedirectTo: new URL('admin.html', window.location.href).href }
+    });
+    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('The request timed out. Please try again.')), 15000));
+    const { error } = await Promise.race([request, timeout]);
+    if (error) throw error;
+    loginStatus.textContent = 'Sign-in link sent. Check your email, including spam.';
+  } catch (error) {
+    loginStatus.textContent = error.message || 'Could not send the sign-in link. Please try again.';
+  } finally {
+    loginButton.disabled = false;
+  }
 });
+
+window.addEventListener('pageshow', () => { loginButton.disabled = false; });
 
 document.querySelector('#admin-logout').addEventListener('click', async () => {
   await supabaseAdmin.auth.signOut();
