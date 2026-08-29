@@ -132,10 +132,14 @@ async function submitEmailForm(form) {
   try {
     const endpoint = form.dataset.endpoint || FORM_ENDPOINT;
     const response = await fetch(endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: data });
-    if (!response.ok) throw new Error('Submission failed');
+    const result = await response.json().catch(() => null);
+    if (!response.ok || !result || result.success === false || result.success === 'false') {
+      throw new Error(result?.message || 'Submission failed');
+    }
     form.reset();
     status.textContent = form.id === 'contact-form' ? 'Your message is on its way to Curtis. Thank you!' : 'Your review was sent. Thank you!';
   } catch (error) {
+    console.error('Email form submission failed:', error);
     status.textContent = 'We could not send that right now. Please try again.';
   } finally {
     submit.disabled = false;
@@ -146,12 +150,6 @@ const reviewForm = document.querySelector('#review-form');
 if (reviewForm) reviewForm.addEventListener('submit', event => {
   event.preventDefault();
   submitEmailForm(reviewForm);
-});
-
-const contactForm = document.querySelector('#contact-form');
-if (contactForm) contactForm.addEventListener('submit', event => {
-  event.preventDefault();
-  submitEmailForm(contactForm);
 });
 
 function createReviewCard(review) {
