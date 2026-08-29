@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Review Moderation — Uncovered Legacy</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="inner-body">
+  <header class="site-header inner-header">
+    <a class="brand" href="index.html" aria-label="Uncovered Legacy home"><span class="brand-mark">UL</span><span><strong>UNCOVERED</strong><em>LEGACY</em></span></a>
+  </header>
+  <main>
+    <section class="page-hero"><div class="eyebrow">PRIVATE ADMIN</div><h1>Review moderation</h1><p>Approve the listener notes you want to publish.</p></section>
+    <section class="inner-main admin-reviews">
+      <div id="admin-login">
+        <h2>Sign in</h2>
+        <p>We’ll email a secure sign-in link to the podcast administrator.</p>
+        <button class="btn btn-dark" id="admin-login-button" type="button">Email Sign-in Link</button>
+      </div>
+      <div id="admin-panel" hidden>
+        <div class="inner-heading"><h2>Pending reviews</h2><button class="btn btn-dark" id="admin-logout" type="button">Sign Out</button></div>
+        <p class="form-status" id="admin-status" role="status" aria-live="polite"></p>
+        <div class="review-wall" id="pending-reviews"></div>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

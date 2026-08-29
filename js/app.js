@@ -149,8 +149,36 @@ async function submitEmailForm(form) {
 const reviewForm = document.querySelector('#review-form');
 if (reviewForm) reviewForm.addEventListener('submit', event => {
   event.preventDefault();
-  submitEmailForm(reviewForm);
+  submitReview(reviewForm);
 });
+
+async function submitReview(form) {
+  const status = form.querySelector('.form-status');
+  const submit = form.querySelector('[type="submit"]');
+  const formData = new FormData(form);
+  const rating = Number.parseInt(formData.get('rating'), 10);
+  status.textContent = 'Sending…';
+  submit.disabled = true;
+  try {
+    if (!window.supabase || !window.UL_SUPABASE) throw new Error('Review service unavailable');
+    const client = window.supabase.createClient(window.UL_SUPABASE.url, window.UL_SUPABASE.publishableKey);
+    const { error } = await client.from('review_submissions').insert({
+      title: formData.get('title').trim(),
+      body: formData.get('review').trim(),
+      author: formData.get('name').trim(),
+      email: formData.get('email').trim(),
+      rating
+    });
+    if (error) throw error;
+    form.reset();
+    status.textContent = 'Your review was sent for approval. Thank you!';
+  } catch (error) {
+    console.error('Review submission failed:', error);
+    status.textContent = 'We could not send that right now. Please try again.';
+  } finally {
+    submit.disabled = false;
+  }
+}
 
 function createReviewCard(review) {
   const quote = document.createElement('blockquote');
@@ -171,12 +199,25 @@ function createReviewCard(review) {
 }
 
 if (document.title.startsWith('Listener Reviews') || document.querySelector('.reviews-grid')) {
-  fetch('data/reviews.json', { cache: 'no-cache' })
-    .then(response => {
-      if (!response.ok) throw new Error('Reviews could not be loaded');
-      return response.json();
-    })
-    .then(data => {
+  const legacyReviews = fetch('data/reviews.json', { cache: 'no-cache' }).then(response => {
+    if (!response.ok) throw new Error('Reviews could not be loaded');
+    return response.json();
+  });
+  const submittedReviews = window.supabase && window.UL_SUPABASE
+    ? window.supabase.createClient(window.UL_SUPABASE.url, window.UL_SUPABASE.publishableKey)
+      .from('public_reviews').select('id,title,body,author,rating,created_at').order('created_at', { ascending: false })
+      .then(({ data, error }) => {
+        if (error) throw error;
+        return data.map(review => ({ ...review, date: formatDate(review.created_at) }));
+      })
+      .catch(error => {
+        console.error('Submitted reviews could not be loaded:', error);
+        return [];
+      })
+    : Promise.resolve([]);
+  Promise.all([legacyReviews, submittedReviews])
+    .then(([legacy, submitted]) => {
+      const data = { reviews: [...submitted, ...legacy.reviews] };
       const wall = document.querySelector('.review-wall');
       if (wall) wall.replaceChildren(...data.reviews.map(createReviewCard));
       const homeReviews = document.querySelector('.reviews-grid');

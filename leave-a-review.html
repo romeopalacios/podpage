@@ -20,20 +20,20 @@
         <h1>Leave a note for<br>Uncovered Legacy.</h1>
         <p>Did an episode move you, teach you something new, or remind you of a story from your own family? Curtis would love to hear what stayed with you.</p>
         <form class="premium-form review-form" id="review-form">
-          <input type="hidden" name="_subject" value="New Uncovered Legacy review">
           <input class="form-honey" type="text" name="_honey" tabindex="-1" autocomplete="off">
           <fieldset class="rating-field">
             <legend>Your rating</legend>
             <div class="star-picker">
-              <input type="radio" id="star5" name="rating" value="5 stars" required><label for="star5" aria-label="5 stars">★</label>
-              <input type="radio" id="star4" name="rating" value="4 stars"><label for="star4" aria-label="4 stars">★</label>
-              <input type="radio" id="star3" name="rating" value="3 stars"><label for="star3" aria-label="3 stars">★</label>
-              <input type="radio" id="star2" name="rating" value="2 stars"><label for="star2" aria-label="2 stars">★</label>
-              <input type="radio" id="star1" name="rating" value="1 star"><label for="star1" aria-label="1 star">★</label>
+              <input type="radio" id="star5" name="rating" value="5" required><label for="star5" aria-label="5 stars">★</label>
+              <input type="radio" id="star4" name="rating" value="4"><label for="star4" aria-label="4 stars">★</label>
+              <input type="radio" id="star3" name="rating" value="3"><label for="star3" aria-label="3 stars">★</label>
+              <input type="radio" id="star2" name="rating" value="2"><label for="star2" aria-label="2 stars">★</label>
+              <input type="radio" id="star1" name="rating" value="1"><label for="star1" aria-label="1 star">★</label>
             </div>
           </fieldset>
-          <div class="form-row"><label>Your name<input type="text" name="name" autocomplete="name" required></label><label>Your email<input type="email" name="email" autocomplete="email" required></label></div>
-          <label>Your review<textarea name="review" rows="5" required placeholder="Tell us what stayed with you…"></textarea></label>
+          <div class="form-row"><label>Your name<input type="text" name="name" autocomplete="name" minlength="2" maxlength="80" required></label><label>Your email<input type="email" name="email" autocomplete="email" maxlength="254" required></label></div>
+          <label>Review title<input type="text" name="title" minlength="2" maxlength="100" required placeholder="Give your review a short title"></label>
+          <label>Your review<textarea name="review" rows="5" minlength="10" maxlength="2000" required placeholder="Tell us what stayed with you…"></textarea></label>
           <button class="btn btn-primary" type="submit">Send Your Review →</button>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>
@@ -51,6 +51,8 @@
     </section>
   </main>
   <footer class="footer"><div class="brand footer-brand"><span class="brand-mark">UL</span><span><strong>UNCOVERED</strong><em>LEGACY</em></span></div><p>Extraordinary stories of everyday people from all walks of life.</p><div class="footer-links"><a href="episodes.html">Episodes</a><a href="about.html">About</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a><a href="https://www.podpage.com/account/login/" target="_blank" rel="noopener">Host Login</a></div></footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
