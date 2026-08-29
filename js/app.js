@@ -180,6 +180,21 @@ async function submitReview(form) {
       const result = await response.json().catch(() => null);
       throw new Error(result?.message || 'Submission failed');
     }
+    const notification = new FormData();
+    notification.append('_subject', `Review awaiting approval: ${formData.get('title').trim()}`);
+    notification.append('_template', 'table');
+    notification.append('_captcha', 'false');
+    notification.append('Reviewer', formData.get('name').trim());
+    notification.append('Reviewer email', formData.get('email').trim());
+    notification.append('Rating', `${rating} stars`);
+    notification.append('Title', formData.get('title').trim());
+    notification.append('Review', formData.get('review').trim());
+    notification.append('Approve or reject', 'https://uncoveredlegacy.com/admin.html');
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body: notification
+    }).catch(error => console.error('Review notification email failed:', error));
     form.reset();
     status.textContent = 'Your review was sent for approval. Thank you!';
   } catch (error) {
