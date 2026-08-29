@@ -161,15 +161,25 @@ async function submitReview(form) {
   submit.disabled = true;
   try {
     if (!window.supabase || !window.UL_SUPABASE) throw new Error('Review service unavailable');
-    const client = window.supabase.createClient(window.UL_SUPABASE.url, window.UL_SUPABASE.publishableKey);
-    const { error } = await client.from('review_submissions').insert({
-      title: formData.get('title').trim(),
-      body: formData.get('review').trim(),
-      author: formData.get('name').trim(),
-      email: formData.get('email').trim(),
-      rating
+    const response = await fetch(`${window.UL_SUPABASE.url}/rest/v1/review_submissions`, {
+      method: 'POST',
+      headers: {
+        apikey: window.UL_SUPABASE.publishableKey,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({
+        title: formData.get('title').trim(),
+        body: formData.get('review').trim(),
+        author: formData.get('name').trim(),
+        email: formData.get('email').trim(),
+        rating
+      })
     });
-    if (error) throw error;
+    if (!response.ok) {
+      const result = await response.json().catch(() => null);
+      throw new Error(result?.message || 'Submission failed');
+    }
     form.reset();
     status.textContent = 'Your review was sent for approval. Thank you!';
   } catch (error) {
