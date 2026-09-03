@@ -281,6 +281,30 @@ const formatDate = value => new Intl.DateTimeFormat('en-US', {
   month: 'long', day: 'numeric', year: 'numeric'
 }).format(new Date(value));
 
+const plainText = value => value.replace(/https?:\/\/\S+/g, '').replace(/\s+/g, ' ').trim();
+const episodeDescription = episode => {
+  const text = plainText(episode.description.split(/\n\n+/)[0]);
+  return text.length > 158 ? `${text.slice(0, 155).trimEnd()}…` : text;
+};
+const absoluteUrl = path => new URL(path, 'https://uncoveredlegacy.com/').href;
+const setMeta = (selector, attribute, value) => {
+  let element = document.head.querySelector(selector);
+  if (!element) {
+    element = document.createElement('meta');
+    const match = selector.match(/meta\[(name|property)="([^"]+)"\]/);
+    if (match) element.setAttribute(match[1], match[2]);
+    document.head.append(element);
+  }
+  element.setAttribute(attribute, value);
+};
+const toIsoDuration = duration => {
+  if (!duration) return undefined;
+  const parts = duration.split(':').map(Number);
+  if (parts.some(Number.isNaN)) return undefined;
+  const [hours, minutes, seconds] = parts.length === 3 ? parts : [0, ...parts];
+  return `PT${hours ? `${hours}H` : ''}${minutes ? `${minutes}M` : ''}${seconds ? `${seconds}S` : ''}`;
+};
+
 async function loadEpisodeData() {
   const response = await fetch('data/episodes.json', { cache: 'no-cache' });
   if (!response.ok) throw new Error('The episode archive could not be loaded.');
@@ -458,6 +482,53 @@ function renderEpisodeDetail(episodes) {
     return;
   }
   document.title = `${episode.title} — Uncovered Legacy`;
+  const description = episodeDescription(episode);
+  const canonicalUrl = `https://uncoveredlegacy.com/${episodeUrl(episode)}`;
+  const artworkUrl = absoluteUrl(getArtwork(episode));
+  setMeta('meta[name="description"]', 'content', description);
+  setMeta('meta[property="og:title"]', 'content', episode.title);
+  setMeta('meta[property="og:description"]', 'content', description);
+  setMeta('meta[property="og:url"]', 'content', canonicalUrl);
+  setMeta('meta[property="og:image"]', 'content', artworkUrl);
+  setMeta('meta[property="og:image:alt"]', 'content', `${episode.title} artwork`);
+  setMeta('meta[property="article:published_time"]', 'content', episode.published);
+  setMeta('meta[name="twitter:title"]', 'content', episode.title);
+  setMeta('meta[name="twitter:description"]', 'content', description);
+  setMeta('meta[name="twitter:image"]', 'content', artworkUrl);
+  let canonical = document.head.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement('link');
+    canonical.rel = 'canonical';
+    document.head.append(canonical);
+  }
+  canonical.href = canonicalUrl;
+  const schema = document.createElement('script');
+  schema.type = 'application/ld+json';
+  schema.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'PodcastEpisode',
+    '@id': `${canonicalUrl}#episode`,
+    url: canonicalUrl,
+    name: episode.title,
+    description,
+    datePublished: episode.published,
+    image: artworkUrl,
+    episodeNumber: episode.episode || undefined,
+    partOfSeason: episode.season ? {
+      '@type': 'PodcastSeason',
+      seasonNumber: episode.season,
+      partOfSeries: { '@id': 'https://uncoveredlegacy.com/#podcast' }
+    } : undefined,
+    partOfSeries: { '@id': 'https://uncoveredlegacy.com/#podcast' },
+    author: { '@id': 'https://uncoveredlegacy.com/#curtis-burke' },
+    associatedMedia: {
+      '@type': 'AudioObject',
+      contentUrl: episode.audio,
+      duration: toIsoDuration(episode.duration)
+    },
+    inLanguage: 'en-US'
+  });
+  document.head.append(schema);
   const hero = document.createElement('section');
   hero.className = 'episode-page-hero';
   const image = document.createElement('img');
